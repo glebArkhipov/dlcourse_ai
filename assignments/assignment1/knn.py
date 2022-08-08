@@ -54,8 +54,8 @@ class KNN:
         dists = np.zeros((num_test, num_train), np.float32)
         for i_test in range(num_test):
             for i_train in range(num_train):
-                # TODO: Fill dists[i_test][i_train]
-                pass
+                dists[i_test][i_train] = self.get_manhattan_dist(X[i_test], self.train_X[i_train])
+        return dists
 
     def compute_distances_one_loop(self, X):
         '''
@@ -73,9 +73,8 @@ class KNN:
         num_test = X.shape[0]
         dists = np.zeros((num_test, num_train), np.float32)
         for i_test in range(num_test):
-            # TODO: Fill the whole row of dists[i_test]
-            # without additional loops or list comprehensions
-            pass
+            dists[i_test] = np.absolute(X[i_test] - self.train_X).sum(1)
+        return dists
 
     def compute_distances_no_loops(self, X):
         '''
@@ -89,12 +88,9 @@ class KNN:
         dists, np array (num_test_samples, num_train_samples) - array
            with distances between each test and each train sample
         '''
-        num_train = self.train_X.shape[0]
-        num_test = X.shape[0]
-        # Using float32 to to save memory - the default is float64
-        dists = np.zeros((num_test, num_train), np.float32)
-        # TODO: Implement computing all distances with no loops!
-        pass
+        # Using float32 to save memory - the default is float64
+        dists = np.absolute(X[:, None, :] - self.train_X[None, :, :], dtype=np.float32).sum(-1)
+        return dists
 
     def predict_labels_binary(self, dists):
         '''
@@ -136,3 +132,7 @@ class KNN:
             # nearest training samples
             pass
         return pred
+
+    @staticmethod
+    def get_manhattan_dist(array_1, array_2):
+        return np.absolute(array_1 - array_2).sum()
