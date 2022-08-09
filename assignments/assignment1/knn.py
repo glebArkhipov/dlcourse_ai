@@ -107,9 +107,7 @@ class KNN:
         num_test = dists.shape[0]
         pred = np.zeros(num_test, np.bool)
         for i in range(num_test):
-            # TODO: Implement choosing best class based on k
-            # nearest training samples
-            pass
+            pred[i] = self.get_closest_k(dists[i])
         return pred
 
     def predict_labels_multiclass(self, dists):
@@ -136,3 +134,25 @@ class KNN:
     @staticmethod
     def get_manhattan_dist(array_1, array_2):
         return np.absolute(array_1 - array_2).sum()
+
+    def get_closest_k(self, dists):
+        """
+        :param dists: array - dists from one point
+        :return: prediction for one point
+        """
+        points_and_dists = list(enumerate(dists))
+        closest_points_and_dists = sorted(points_and_dists[:self.k], key=lambda tup: tup[1])
+        for index, dist in points_and_dists[self.k:]:
+            farthest_of_closest = closest_points_and_dists[self.k - 1]
+            if farthest_of_closest[1] > dist:
+                closest_points_and_dists[self.k - 1] = (index, dist)
+            closest_points_and_dists = sorted(closest_points_and_dists, key=lambda tup: tup[1])
+        results = []
+        for (index, _) in closest_points_and_dists:
+            results.append(self.train_y[index])
+        return self.get_the_most_common_elements(results)
+
+    @staticmethod
+    def get_the_most_common_elements(arrays):
+        elements_and_counts = [(el, arrays.count(el)) for el in set(arrays)]
+        return max(elements_and_counts, key=lambda el_counts: el_counts[1])[0]
