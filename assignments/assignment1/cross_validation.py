@@ -3,6 +3,10 @@ from knn import KNN
 from metrics import binary_classification_metrics
 
 
+def find_k_with_highest_f1(k_to_f1):
+    return max(k_to_f1.keys(), key=(lambda k: k_to_f1[k]))
+
+
 def cross_validate(train_x, train_y, num_folds, k_choices):
     train_folds_x = np.array_split(train_x, num_folds)
     train_folds_y = np.array_split(train_y, num_folds)
