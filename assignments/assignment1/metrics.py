@@ -25,16 +25,18 @@ def binary_classification_metrics(predictions, realities):
     return precision, recall, f1, accuracy
 
 
-def multiclass_accuracy(prediction, ground_truth):
+def multiclass_accuracy(predictions, realities):
     '''
     Computes metrics for multiclass classification
 
     Arguments:
-    prediction, np array of int (num_samples) - model predictions
-    ground_truth, np array of int (num_samples) - true labels
+    predictions, np array of int (num_samples) - model predictions
+    realities, np array of int (num_samples) - true labels
 
     Returns:
     accuracy - ratio of accurate predictions to total samples
     '''
-    # TODO: Implement computing accuracy
-    return 0
+    predictions_and_ground_truths = list(zip(predictions, realities))
+    match_num = len(list(filter(lambda x: x[0] == x[1], predictions_and_ground_truths)))
+
+    return match_num / len(predictions)
