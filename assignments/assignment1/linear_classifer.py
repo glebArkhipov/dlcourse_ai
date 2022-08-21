@@ -51,10 +51,13 @@ def softmax_with_cross_entropy(predictions, target_index):
       loss, single value - cross-entropy loss
       dprediction, np array same shape as predictions - gradient of predictions by loss value
     """
-    # TODO implement softmax with cross-entropy
-    # Your final implementation shouldn't have any loops
-    raise Exception("Not implemented!")
-
+    probs = softmax(predictions)
+    loss = cross_entropy_loss(probs, target_index)
+    # ∂L/∂zi = probs[i] - real_probs[i]
+    # gradient of loss - vector showing how to make loss greater
+    # gradient of loss - vector where elements are derivatives of each prediction
+    dprediction = probs
+    dprediction[target_index] = dprediction[target_index] - 1
     return loss, dprediction
 
 
