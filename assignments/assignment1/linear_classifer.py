@@ -32,9 +32,8 @@ def cross_entropy_loss(probs, target_index):
     Returns:
       loss: single value
     """
-    # TODO implement cross-entropy
-    # Your final implementation shouldn't have any loops
-    raise Exception("Not implemented!")
+    prob_of_true_class = probs[target_index]
+    return -1 * np.log(prob_of_true_class)
 
 
 def softmax_with_cross_entropy(predictions, target_index):
