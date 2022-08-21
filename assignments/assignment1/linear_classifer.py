@@ -13,9 +13,10 @@ def softmax(predictions):
       probs, np array of the same shape as predictions -
         probability for every class, 0..1
     """
-    # TODO implement softmax
-    # Your final implementation shouldn't have any loops
-    raise Exception("Not implemented!")
+    predictions -= np.max(predictions)
+    predictions_exp = np.power(np.e, predictions)
+    sum_predictions_exp = np.sum(predictions_exp)
+    return predictions_exp / sum_predictions_exp
 
 
 def cross_entropy_loss(probs, target_index):
