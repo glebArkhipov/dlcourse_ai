@@ -13,8 +13,8 @@ def softmax(predictions):
       probs, np array of the same shape as predictions -
         probability for every class, 0..1
     """
-    predictions -= np.max(predictions)
-    predictions_exp = np.power(np.e, predictions)
+    minimized_preds = predictions - np.max(predictions)
+    predictions_exp = np.power(np.e, minimized_preds)
     sum_predictions_exp = np.sum(predictions_exp)
     return predictions_exp / sum_predictions_exp
 
