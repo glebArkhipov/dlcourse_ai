@@ -32,8 +32,9 @@ def cross_entropy_loss(probs, target_index):
     Returns:
       loss: single value
     """
-    prob_of_true_class = probs[target_index]
-    return -1 * np.log(prob_of_true_class)
+    prob_of_true_class = probs[..., target_index]
+    cross_entropies = -1 * np.log(prob_of_true_class)
+    return np.mean(cross_entropies)
 
 
 def softmax_with_cross_entropy(predictions, target_index):
