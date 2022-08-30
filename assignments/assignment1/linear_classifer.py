@@ -15,8 +15,9 @@ def softmax(predictions):
     """
     minimized_preds = predictions - np.max(predictions, axis=-1, keepdims=True)
     predictions_exp = np.power(np.e, minimized_preds)
-    sum_predictions_exp = np.sum(predictions_exp)
-    return predictions_exp / sum_predictions_exp
+    sum_predictions_exp = np.sum(predictions_exp, axis=-1, keepdims=True)
+    probs = predictions_exp / sum_predictions_exp
+    return probs
 
 
 def cross_entropy_loss(probs, target_index):
