@@ -57,6 +57,8 @@ def softmax_with_cross_entropy(predictions, target_index):
     # ∂L/∂zi = probs[i] - real_probs[i]
     # gradient of loss - vector showing how to make loss greater
     # gradient of loss - vector where elements are derivatives of each prediction
+    # if i == target_index, then real_probs[i] = 0, so ∂L/∂zi = probs[i]
+    # if i != target_index, then real_probs[i] = 1, so ∂L/∂zi = probs[i] -1
     dprediction = probs
     dprediction[target_index] = dprediction[target_index] - 1
     return loss, dprediction
