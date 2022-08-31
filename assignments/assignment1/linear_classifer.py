@@ -33,9 +33,17 @@ def cross_entropy_loss(probs, target_index):
     Returns:
       loss: single value
     """
-    prob_of_true_class = probs[..., target_index]
-    cross_entropies = -1 * np.log(prob_of_true_class)
-    return np.mean(cross_entropies)
+    if type(target_index) != int:
+        cross_entropies = np.zeros(probs.shape[0])
+        for i in range(probs.shape[0]):
+            prob_of_true_class = probs[i, target_index[i]]
+            cross_entropy = -1 * np.log(prob_of_true_class)
+            cross_entropies[i] = cross_entropy
+        return np.mean(cross_entropies)
+    else:
+        prob_of_true_class = probs[target_index]
+        cross_entropy = -1 * np.log(prob_of_true_class)
+        return cross_entropy
 
 
 def softmax_with_cross_entropy(predictions, target_index):
@@ -60,8 +68,13 @@ def softmax_with_cross_entropy(predictions, target_index):
     # gradient of loss - vector where elements are derivatives of each prediction
     # if i == target_index, then real_probs[i] = 0, so ∂L/∂zi = probs[i]
     # if i != target_index, then real_probs[i] = 1, so ∂L/∂zi = probs[i] -1
-    dprediction = probs
-    dprediction[target_index] = dprediction[target_index] - 1
+    dprediction = probs.copy()
+    if type(target_index) != int:
+        for i in range(dprediction.shape[0]):
+            dprediction[i][target_index[i]] -= 1
+        dprediction /= probs.shape[0]
+    else:
+        dprediction[target_index] -= 1
     return loss, dprediction
 
 
