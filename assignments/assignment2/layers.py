@@ -52,13 +52,11 @@ class Param:
 
 class ReLULayer:
     def __init__(self):
-        pass
+        self.input = None
 
     def forward(self, X):
-        # TODO: Implement forward pass
-        # Hint: you'll need to save some information about X
-        # to use it later in the backward pass
-        raise Exception("Not implemented!")
+        self.input = X
+        return np.maximum(X, 0)
 
     def backward(self, d_out):
         """
@@ -72,10 +70,7 @@ class ReLULayer:
         d_result: np array (batch_size, num_features) - gradient
           with respect to input
         """
-        # TODO: Implement backward pass
-        # Your final implementation shouldn't have any loops
-        raise Exception("Not implemented!")
-        return d_result
+        return (self.input > 0) * d_out
 
     def params(self):
         # ReLU Doesn't have any parameters
